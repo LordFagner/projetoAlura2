@@ -2,7 +2,34 @@ import pandas as pd
 url = '/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv'
 # Carregar o JSON
 df = pd.read_csv(url)
-print(df.head())
+
+df['Churn'].fillna('no info',inplace=True)
+df.to_csv('database/TelecomX_Data_Normalizado.csv')
+print(df.isnull().sum())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 como gerei meu arqivo csv editado e normalizado 
 
