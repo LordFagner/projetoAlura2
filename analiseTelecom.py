@@ -3,15 +3,8 @@ url = '/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv'
 # Carregar o JSON
 df = pd.read_csv(url)
 
-df['Churn'].fillna('no info',inplace=True)
-df.to_csv('database/TelecomX_Data_Normalizado.csv')
-print(df.isnull().sum())
-
-
-
-
-
-
+df.columns = df.columns.str.lower().str.replace('.', '_')
+df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv', index=False)
 
 
 

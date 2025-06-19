@@ -1,4 +1,4 @@
-,customerID,Churn,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,Contract,PaperlessBilling,PaymentMethod,Charges.Monthly,Charges.Total,gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines
+unnamed: 0,customerid,churn,internetservice,onlinesecurity,onlinebackup,deviceprotection,techsupport,streamingtv,streamingmovies,contract,paperlessbilling,paymentmethod,charges_monthly,charges_total,gender,seniorcitizen,partner,dependents,tenure,phoneservice,multiplelines
 0,0002-ORFBO,No,DSL,No,Yes,No,Yes,Yes,No,One year,Yes,Mailed check,65.6,593.3,Female,0,Yes,Yes,9,Yes,No
 1,0003-MKNFE,No,DSL,No,No,No,No,No,Yes,Month-to-month,No,Mailed check,59.9,542.4,Male,0,No,No,9,Yes,Yes
 2,0004-TLHLJ,Yes,Fiber optic,No,No,Yes,No,No,No,Month-to-month,Yes,Electronic check,73.9,280.85,Male,0,No,No,4,Yes,No
