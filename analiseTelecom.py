@@ -1,47 +1,21 @@
 import pandas as pd
-import numpy as np
+import matplotlib.pyplot as plt 
 url = '/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv'
 # Carregar o JSON
 df = pd.read_csv(url)
+total_clientes = df['customerid'].count()
 
-"""colunas_binarias = [col for col in df.columns 
-                     if set(df[col].dropna().astype(str).str.lower().unique()) <= {'yes', 'no'}]
+total_que_permanesceram = df.query('churn == 0')['churn'].count()
+print(total_que_permanesceram)
+total_que_sairam = df.query('churn == 1')['churn'].count()
+print(total_que_sairam)
+percentul_que_sairam = (total_que_sairam/total_clientes) * 100
+percentual_que_ficaram = (total_que_permanesceram/total_clientes) * 100 
 
+plt.pie( [total_que_permanesceram, total_que_sairam], labels=['Permanesceram','Saíram'] , colors= ['r','b'], autopct='%1.1f%%',startangle=90,explode=(0,0.1),shadow=True 
+        ) 
+plt.show()
 
-df[colunas_binarias] = df[colunas_binarias].apply(lambda x: x.str.lower().map({'yes': 1, 'no': 0}))
-
-df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv')
-"""
-
-"""
-colunas_com_no = [col for col in df.columns 
-                   if 'no' in set(df[col].dropna().astype(str).str.lower().unique())]
-
-colunas_com_no = [col for col in colunas_com_no if col != 'churn']  # Excluindo a coluna 'Churn' se estiver presente
-
-df[colunas_com_no] = df[colunas_com_no].applymap(lambda x: 0 if str(x).strip().lower() == 'no' else 1)"""
-
-"""df['churn'] = df['churn'].apply(lambda x: 1 if str(x).strip().lower() != 'no' else 0)
-df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv')"""
-
-valores_para_pagamento ={val : ind+1  for ind,val  in enumerate(df['paymentmethod'].unique())}
-print(valores_para_pagamento)
-df['paymentmethod'] = df['paymentmethod'].map(lambda x : valores_para_pagamento.get(x,x))
-print(df['paymentmethod'])
-valores_para_contrato ={val : ind+1  for ind,val  in enumerate(df['contract'].unique())}
-df['contract'] = df['contract'].map(lambda x : valores_para_contrato.get(x,x))
-valores_diferente_De_no = [val for val in df['internetservice'].dropna().unique() if str(val).strip().lower() != 'no']  
-
-valores_para_plano_internet = {val : ind+1  for ind,val  in enumerate(valores_diferente_De_no) }
-valores_para_plano_internet['no'] = 0
-df['internetservice'] = df['internetservice'].map(lambda x : valores_para_plano_internet.get(x,x))
-colunas_com_yes = [col for col in df.columns if 'yes' in set(df[col].dropna().astype(str).str.lower().unique())]
-df[colunas_com_yes] = df[colunas_com_yes].applymap(lambda x : 1 if str(x).strip().lower() == 'yes' else 0  )
-
-valores_para_homem_mulher = {val : ind + 1 for ind,val in enumerate(df['gender'].dropna().unique())}
-df['gender'] = df['gender'].map(lambda x : valores_para_homem_mulher.get(x,x))
-
-print(df['gender'])
 
 
 
