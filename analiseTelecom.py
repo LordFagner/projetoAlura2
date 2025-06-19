@@ -4,14 +4,29 @@ url = '/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv'
 # Carregar o JSON
 df = pd.read_csv(url)
 
-colunas_binarias = [col for col in df.columns 
+"""colunas_binarias = [col for col in df.columns 
                      if set(df[col].dropna().astype(str).str.lower().unique()) <= {'yes', 'no'}]
 
 
 df[colunas_binarias] = df[colunas_binarias].apply(lambda x: x.str.lower().map({'yes': 1, 'no': 0}))
 
-
 df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv')
+"""
+
+"""
+colunas_com_no = [col for col in df.columns 
+                   if 'no' in set(df[col].dropna().astype(str).str.lower().unique())]
+
+colunas_com_no = [col for col in colunas_com_no if col != 'churn']  # Excluindo a coluna 'Churn' se estiver presente
+
+df[colunas_com_no] = df[colunas_com_no].applymap(lambda x: 0 if str(x).strip().lower() == 'no' else 1)"""
+
+df['churn'] = df['churn'].apply(lambda x: 1 if str(x).strip().lower() != 'no' else 0)
+df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv')
+
+
+
+
 
 
 
