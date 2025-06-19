@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-url = '/home/fagner/projetoAlura/database/TelecomX_Data_Normalizado.csv'
+url = '/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv'
 # Carregar o JSON
 df = pd.read_csv(url)
 
@@ -21,23 +21,35 @@ colunas_com_no = [col for col in colunas_com_no if col != 'churn']  # Excluindo 
 
 df[colunas_com_no] = df[colunas_com_no].applymap(lambda x: 0 if str(x).strip().lower() == 'no' else 1)"""
 
-df['churn'] = df['churn'].apply(lambda x: 1 if str(x).strip().lower() != 'no' else 0)
-df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv')
+"""df['churn'] = df['churn'].apply(lambda x: 1 if str(x).strip().lower() != 'no' else 0)
+df.to_csv('/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv')"""
 
+valores_para_pagamento ={val : ind+1  for ind,val  in enumerate(df['paymentmethod'].unique())}
+print(valores_para_pagamento)
+df['paymentmethod'] = df['paymentmethod'].map(lambda x : valores_para_pagamento.get(x,x))
+print(df['paymentmethod'])
+valores_para_contrato ={val : ind+1  for ind,val  in enumerate(df['contract'].unique())}
+df['contract'] = df['contract'].map(lambda x : valores_para_contrato.get(x,x))
+valores_diferente_De_no = [val for val in df['internetservice'].dropna().unique() if str(val).strip().lower() != 'no']  
 
+valores_para_plano_internet = {val : ind+1  for ind,val  in enumerate(valores_diferente_De_no) }
+valores_para_plano_internet['no'] = 0
+df['internetservice'] = df['internetservice'].map(lambda x : valores_para_plano_internet.get(x,x))
+colunas_com_yes = [col for col in df.columns if 'yes' in set(df[col].dropna().astype(str).str.lower().unique())]
+df[colunas_com_yes] = df[colunas_com_yes].applymap(lambda x : 1 if str(x).strip().lower() == 'yes' else 0  )
 
+valores_para_homem_mulher = {val : ind + 1 for ind,val in enumerate(df['gender'].dropna().unique())}
+df['gender'] = df['gender'].map(lambda x : valores_para_homem_mulher.get(x,x))
 
-
-
-
-
-
-
+print(df['gender'])
 
 
 
 """
 como gerei meu arqivo csv editado e normalizado 
+# valores de referencia para a criação do grafico
+{'Mailed check': 1, 'Electronic check': 2, 'Credit card (automatic)': 3, 'Bank transfer (automatic)': 4}
+{'DSL': 1, 'Fiber optic': 2, 'no': 0}
 
 print('--'*50)
 # Normalizar o JSON
