@@ -1,20 +1,64 @@
 import pandas as pd
 import matplotlib.pyplot as plt 
+import seaborn as sns
 url = '/home/fagner/projetoAlura/database/TelecomX_Data_com_0_e_1.csv'
 # Carregar o JSON
+
+
 df = pd.read_csv(url)
 total_clientes = df['customerid'].count()
 
 total_que_permanesceram = df.query('churn == 0')['churn'].count()
 print(total_que_permanesceram)
 total_que_sairam = df.query('churn == 1')['churn'].count()
+pessaos_que_sairam = df.query('churn == 1')
 print(total_que_sairam)
 percentul_que_sairam = (total_que_sairam/total_clientes) * 100
 percentual_que_ficaram = (total_que_permanesceram/total_clientes) * 100 
 
-plt.pie( [total_que_permanesceram, total_que_sairam], labels=['Permanesceram','Saíram'] , colors= ['r','b'], autopct='%1.1f%%',startangle=90,explode=(0,0.1),shadow=True 
-        ) 
+homens_que_sairam = (pessaos_que_sairam.query('gender == 2')['customerid'].count() / total_que_sairam) * 100
+mulheres_que_sairam = (pessaos_que_sairam.query('gender == 1')['customerid'].count() / total_que_sairam) * 100
+
+
+fig , sairam_ficaram  = plt.subplots(figsize=(10, 6))
+wd,tx,at =  sairam_ficaram.pie([total_que_permanesceram, total_que_sairam], labels=['Permanesceram','Saíram'] , colors= ['r','b'], autopct='%1.1f%%',startangle=90,explode=(0,0.1),shadow=True) 
+for color in at : 
+    color.set_color('white')
+    color.set_fontsize(12)
+sairam_ficaram.set_title('Clientes que sairam e que permaneceram na TelecomX', fontsize=20)
+sairam_ficaram.text(0,-1.3,'o grafico possui um erro percentual de  + ou - 4% ', fontsize=12, ha = 'center',va = 'top' , color='black')
+fig2,ax = plt.subplots(2,2,figsize=(15, 12))
+
+sns.barplot(x=['homens','mulheres'] , y=[homens_que_sairam, mulheres_que_sairam], palette=['blue', 'pink'], ax=ax[0,0])
+
+ax[0, 0].set_title('Percentual de Quem Saiu por Gênero')
+ax[0, 0].set_ylabel('Percentual (%)')
+ax[0, 0].set_ylim(0, 100)
+valores = [homens_que_sairam, mulheres_que_sairam]
+for index, value in enumerate(valores):
+    ax[0, 0].text(
+        index,                          # Posição x (posição da barra)
+        value + 2,                      # Posição y (um pouco acima da barra)
+        f'{value:.1f}%',                # Texto com 1 casa decimal
+        ha='center', fontsize=11, color='black'
+    )
+ax[0, 1].set_visible(False)  # Desativa se quiser
+ax[1, 0].set_visible(False)  # Desativa se quiser
+ax[1, 1].set_visible(False)
+
+plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -24,6 +68,7 @@ como gerei meu arqivo csv editado e normalizado
 # valores de referencia para a criação do grafico
 {'Mailed check': 1, 'Electronic check': 2, 'Credit card (automatic)': 3, 'Bank transfer (automatic)': 4}
 {'DSL': 1, 'Fiber optic': 2, 'no': 0}
+mulher : 1 , homem: 2 
 
 print('--'*50)
 # Normalizar o JSON
